@@ -52,7 +52,7 @@ const Navbar: React.FC<NavbarProps> = ({ userType }) => {
       <h5 className="text-center text-xl font-semibold mb-6">Aluno</h5>
 
       <ul className="space-y-3">
-      <li><Link href="/User/dasboard" className="block px-4 py-2 rounded hover:bg-blue-500">Dashboard</Link></li>
+      <li><Link href="/User/dashboard" className="block px-4 py-2 rounded hover:bg-blue-500">Dashboard</Link></li>
       <li><Link href="/User/agenda" className="block px-4 py-2 rounded hover:bg-blue-500">Agenda</Link></li>
       <li><Link href="/User/monitoria" className="block px-4 py-2 rounded hover:bg-blue-500">Monitorias</Link></li>
       <li><Link href="/" className="block px-4 py-2 rounded hover:bg-blue-500">Sair</Link></li>
