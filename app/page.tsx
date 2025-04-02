@@ -1,5 +1,5 @@
 'use client'; // Adicione isso no início do arquivo
-import { Layout, OutroComponente } from './components/Layout';
+//import { Layout, OutroComponente } from './components/Layout';
 
 
 const Home = () => {

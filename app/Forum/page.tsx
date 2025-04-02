@@ -2,33 +2,47 @@
 
 import { useState } from "react";
 
+interface Comment {
+  id: number;
+  text: string;
+  created_at: string;
+}
+
+interface Post {
+  id: number;
+  title: string;
+  content: string;
+  created_at: string;
+  comments: Comment[];
+}
+
 const Home = () => {
-  const [posts, setPosts] = useState([
-    { 
-      id: 1, 
-      title: "Dúvida sobre JavaScript", 
-      content: "Alguém pode me explicar closures?", 
-      created_at: new Date().toISOString(), 
-      comments: [] 
+  const [posts, setPosts] = useState<Post[]>([
+    {
+      id: 1,
+      title: "Dúvida sobre JavaScript",
+      content: "Alguém pode me explicar closures?",
+      created_at: new Date().toISOString(),
+      comments: [],
     },
-    { 
-      id: 2, 
-      title: "Melhores práticas em React", 
-      content: "Quais são os padrões mais recomendados?", 
-      created_at: new Date().toISOString(), 
-      comments: [] 
+    {
+      id: 2,
+      title: "Melhores práticas em React",
+      content: "Quais são os padrões mais recomendados?",
+      created_at: new Date().toISOString(),
+      comments: [],
     },
   ]);
-  
+
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!title.trim() || !content.trim()) return;
 
-    const newPost = {
+    const newPost: Post = {
       id: posts.length + 1,
       title,
       content,
@@ -49,7 +63,10 @@ const Home = () => {
         post.id === postId
           ? {
               ...post,
-              comments: [...post.comments, { id: Date.now(), text: commentText, created_at: new Date().toISOString() }],
+              comments: [
+                ...post.comments,
+                { id: Date.now(), text: commentText, created_at: new Date().toISOString() },
+              ],
             }
           : post
       )
