@@ -297,10 +297,6 @@ export default function LandingPage() {
               </form>
             </div>
           </div>
-
-          <div className="mt-12 pt-8 border-t border-gray-700 text-center text-sm">
-            <p>© 2025 Monitoria Digital. Todos os direitos reservados.</p>
-          </div>
         </div>
       </footer>
     </div>
