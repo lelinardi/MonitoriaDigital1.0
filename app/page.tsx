@@ -31,12 +31,12 @@ const featureSections = [
 ];
 
 // Componente para os resultados com métricas
-const ResultMetric = ({ value, label }: { value: string; label: string }) => (
+/*const ResultMetric = ({ value, label }: { value: string; label: string }) => (
   <div className="flex flex-col items-center text-center p-4">
     <div className="text-destaque text-5xl font-bold mb-2">{value}</div>
     <div className="text-paragrafo">{label}</div>
   </div>
-);
+);*/
 
 export default function LandingPage() {
   // Estados para controlar a expansão das seções e menu móvel
@@ -298,9 +298,7 @@ export default function LandingPage() {
             </div>
           </div>
 
-          <div className="mt-12 pt-8 border-t border-gray-700 text-center text-sm">
-            <p>© 2025 Monitoria Digital. Todos os direitos reservados.</p>
-          </div>
+          
         </div>
       </footer>
     </div>

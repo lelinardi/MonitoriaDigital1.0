@@ -1,12 +1,10 @@
 // app/components/footer.tsx
 import React from 'react';
 
-const Footer = () => {
-  return (
-    <footer className="bg-gray-800 text-white py-4 text-center">
-      <p>© 2025 Monitoria Digital. Todos os direitos reservados.</p>
-    </footer>
-  );
-};
+const Footer = () => (
+  <footer className="bg-gray-800 text-white text-center py-4">
+    © 2025 Monitoria Digital. Todos os direitos reservados.
+  </footer>
+);
 
 export default Footer;

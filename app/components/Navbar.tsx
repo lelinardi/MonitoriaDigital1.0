@@ -1,73 +1,124 @@
-import React from 'react';
+'use client';
+
+import { useState } from 'react';
 import Link from 'next/link';
+import { Menu, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 type NavbarProps = {
   userType: 'admin' | 'monitor' | 'student';
 };
 
+type LinkItem = {
+  href: string;
+  label: string;
+  extra?: string;
+};
+
 const Navbar: React.FC<NavbarProps> = ({ userType }) => {
-  // Função para aplicar a cor da navbar conforme o tipo de usuário
+  const [isOpen, setIsOpen] = useState(false);
+  const toggleMenu = () => setIsOpen((prev) => !prev);
+
   const getNavbarColor = () => {
     switch (userType) {
       case 'admin':
-        return 'bg-gray-900'; // Cor para o Admin
+        return 'bg-gray-900';
       case 'monitor':
-        return 'bg-red-800'; // Cor para o Monitor
+        return 'bg-red-800';
       case 'student':
-        return 'bg-blue-700'; // Cor para o Estudante
+        return 'bg-blue-700';
       default:
-        return 'bg-gray-900'; // Cor padrão (caso o tipo de usuário não seja reconhecido)
+        return 'bg-gray-900';
     }
   };
 
-  const renderAdminLinks = () => (
-    <>
-      <h3 className="text-center text-xl font-semibold mb-6">Monitoria Digital ADM</h3>
-      <ul className="space-y-3">
-        <li><Link href="/admin/dashboard" className="bg-gray-700 px-4 py-2 rounded">Dashboard</Link></li>
-        <li><Link href="/admin/cadastro" className="block px-4 py-2 rounded hover:bg-gray-700">Cadastro de Usuários</Link></li>
-        <li><Link href="/admin/feedbacks" className="block px-4 py-2 rounded hover:bg-gray-700">Feedbacks</Link></li>
-        <li><Link href="/admin/monitoria" className="block px-4 py-2 rounded hover:bg-gray-700">Cadastrar Monitorias</Link></li>
-        <li><Link href="/" className="block px-4 py-2 rounded hover:bg-red-600 mt-4">Sair</Link></li>
-      </ul>
-    </>
-  );
+  const links: Record<'admin' | 'monitor' | 'student', LinkItem[]> = {
+    admin: [
+      { href: '/admin/dashboard', label: 'Dashboard' },
+      { href: '/admin/cadastro', label: 'Cadastro de Usuários' },
+      { href: '/admin/feedbacks', label: 'Feedbacks' },
+      { href: '/admin/monitoria', label: 'Cadastrar Monitorias' },
+      { href: '/', label: 'Sair', extra: 'mt-4 hover:bg-red-600' },
+    ],
+    monitor: [
+      { href: '/monitor/dashboard', label: 'Dashboard' },
+      { href: '/monitor/agenda', label: 'Agenda' },
+      { href: '/monitor/monitoria', label: 'Monitorias' },
+      { href: '/', label: 'Sair' },
+    ],
+    student: [
+      { href: '/user/dashboard', label: 'Dashboard' },
+      { href: '/user/agenda', label: 'Agenda' },
+      { href: '/user/monitoria', label: 'Monitorias' },
+      { href: '/', label: 'Sair' },
+    ],
+  };
 
-  const renderMonitorLinks = () => (
-    <>
-      <h4 className="text-center text-xl font-semibold mb-6">Monitoria Digital</h4>
-      <h5 className="text-center text-xl font-semibold mb-6">Monitor</h5>
-      <ul className="space-y-3">
-      <li><Link href="/monitor/dashboard" className="block px-4 py-2 rounded hover:bg-blue-600 transition">Dashboard</Link></li>
-      <li><Link href="/monitor/agenda" className="block px-4 py-2 rounded hover:bg-blue-600 transition">Agenda</Link></li>
-      <li><Link href="/monitor/monitoria" className="block px-4 py-2 rounded hover:bg-blue-600 transition">Monitorias</Link></li>
-      <li><Link href="/" className="block px-4 py-2 rounded hover:bg-blue-600 transition">Sair</Link></li>
-      </ul>
-    </>
-  );
-
-  const renderStudentLinks = () => (
-    <>
-      <h4 className="text-center text-xl font-semibold mb-6">Monitoria Digital</h4>
-      <h5 className="text-center text-xl font-semibold mb-6">Aluno</h5>
-
-      <ul className="space-y-3">
-      <li><Link href="/User/dashboard" className="block px-4 py-2 rounded hover:bg-blue-500">Dashboard</Link></li>
-      <li><Link href="/User/agenda" className="block px-4 py-2 rounded hover:bg-blue-500">Agenda</Link></li>
-      <li><Link href="/User/monitoria" className="block px-4 py-2 rounded hover:bg-blue-500">Monitorias</Link></li>
-      <li><Link href="/" className="block px-4 py-2 rounded hover:bg-blue-500">Sair</Link></li>
-      </ul>
-    </>
-  );
+  const renderLinks = () =>
+    links[userType].map(({ href, label, extra = '' }) => (
+      <Link
+        key={href}
+        href={href}
+        className={`block px-4 py-2 rounded hover:bg-opacity-80 transition ${extra}`}
+      >
+        {label}
+      </Link>
+    ));
 
   return (
-    <div className="flex min-h-screen">
-      <nav className={`${getNavbarColor()} text-white w-64 p-6 shadow-md`}>
-        {userType === 'admin' && renderAdminLinks()}
-        {userType === 'monitor' && renderMonitorLinks()}
-        {userType === 'student' && renderStudentLinks()}
-      </nav>
-    </div>
+    <>
+      {/* Renderiza o botão apenas se o menu estiver fechado */}
+      {!isOpen && (
+        <div
+          className={`fixed top-0 left-0 w-full flex items-center justify-between p-4 z-50 text-white ${getNavbarColor()}`}
+        >
+          <button onClick={toggleMenu}>
+            <Menu className="w-6 h-6" />
+          </button>
+          <h1 className="text-lg font-bold">Monitoria Digital</h1>
+          
+        </div>
+      )}
+
+      {/* Drawer lateral animado visível apenas quando isOpen = true */}
+      <AnimatePresence>
+        {isOpen && (
+          <>
+            {/* Fundo escurecido */}
+            <motion.div
+              className="fixed inset-0 bg-black bg-opacity-40 z-40"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={toggleMenu}
+            />
+
+            {/* Menu lateral */}
+            <motion.div
+              className={`fixed top-0 left-0 w-64 h-full p-6 z-50 text-white ${getNavbarColor()}`}
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+            >
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-xl font-semibold">
+                  {userType === 'admin'
+                    ? 'ADM'
+                    : userType === 'monitor'
+                    ? 'Monitor'
+                    : 'Aluno'}
+                </h3>
+                <button onClick={toggleMenu}>
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+              <nav className="space-y-3">{renderLinks()}</nav>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 
